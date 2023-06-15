@@ -8,7 +8,7 @@
 #include <optional>
 #include <string>
 
-enum class ChainType {
+enum class ChainType { //TODO：分别表示什么意思？
     MAIN,
     TESTNET,
     SIGNET,

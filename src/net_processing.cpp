@@ -1839,7 +1839,7 @@ PeerManagerImpl::PeerManagerImpl(CConnman& connman, AddrMan& addrman,
 }
 
 void PeerManagerImpl::StartScheduledTasks(CScheduler& scheduler)
-{
+{//!TODO: tip是什么意思？
     // Stale tip checking and peer eviction are on two different timers, but we
     // don't want them to get out of sync due to drift in the scheduler, so we
     // combine them in one function and schedule at the quicker (peer-eviction)

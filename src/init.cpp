@@ -317,7 +317,7 @@ void Shutdown(NodeContext& node)
     // up with our current chain to avoid any strange pruning edge cases and make
     // next startup faster by avoiding rescan.
 
-    if (node.chainman) {
+    if (node.chainman) { //TODO: chainman是什么意思？
         LOCK(cs_main);
         for (Chainstate* chainstate : node.chainman->GetAll()) {
             if (chainstate->CanFlushToDisk()) {
@@ -413,6 +413,7 @@ void SetupServerArgs(ArgsManager& argsman)
 
     init::AddLoggingArgs(argsman);
 
+//似乎参数分两类，一类是基础的大家都会有的，一类是可以进行修改tweak的
     const auto defaultBaseParams = CreateBaseChainParams(ChainType::MAIN);
     const auto testnetBaseParams = CreateBaseChainParams(ChainType::TESTNET);
     const auto signetBaseParams = CreateBaseChainParams(ChainType::SIGNET);
@@ -666,14 +667,14 @@ static bool AppInitServers(NodeContext& node)
     const ArgsManager& args = *Assert(node.args);
     RPCServer::OnStarted(&OnRPCStarted);
     RPCServer::OnStopped(&OnRPCStopped);
-    if (!InitHTTPServer())
+    if (!InitHTTPServer()) //本机是个http服务，支持外部查询bitcoind相关信息
         return false;
     StartRPC();
     node.rpc_interruption_point = RpcInterruptionPoint;
-    if (!StartHTTPRPC(&node))
+    if (!StartHTTPRPC(&node)) //进行服务映射，基于evhttp
         return false;
     if (args.GetBoolArg("-rest", DEFAULT_REST_ENABLE)) StartREST(&node);
-    StartHTTPServer();
+    StartHTTPServer(); //重点在启动相关服务
     return true;
 }
 
@@ -1191,7 +1192,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     }
 
     // ********************************************************* Step 5: verify wallet database integrity
-    for (const auto& client : node.chain_clients) {
+    for (const auto& client : node.chain_clients) { //chain clients其实wallet- TODO：是本地的wallet还是远程的？
         if (!client->verify()) {
             return false;
         }
@@ -1209,7 +1210,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     {
 
-        // Read asmap file if configured
+        // Read asmap file if configured TODO: asmap是什么文件？配置什么信息？
         std::vector<bool> asmap;
         if (args.IsArgSet("-asmap")) {
             fs::path asmap_path = args.GetPathArg("-asmap", DEFAULT_ASMAP_FILENAME);

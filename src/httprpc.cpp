@@ -144,7 +144,7 @@ static bool RPCAuthorized(const std::string& strAuth, std::string& strAuthUserna
     return multiUserAuthorized(strUserPass);
 }
 
-static bool HTTPReq_JSONRPC(const std::any& context, HTTPRequest* req)
+static bool HTTPReq_JSONRPC(const std::any& context, HTTPRequest* req) //context是nodecontext
 {
     // JSONRPC handles only POST
     if (req->GetRequestMethod() != HTTPRequest::POST) {
@@ -292,6 +292,7 @@ static bool InitRPCAuthentication()
     return true;
 }
 
+//启用http协议的服务端应用，可供客户端请求
 bool StartHTTPRPC(const std::any& context)
 {
     LogPrint(BCLog::RPC, "Starting HTTP RPC server\n");

@@ -2311,6 +2311,7 @@ bool CConnman::InitBinds(const Options& options)
     return fBound;
 }
 
+//!TODO: 这是干嘛的？
 bool CConnman::Start(CScheduler& scheduler, const Options& connOptions)
 {
     AssertLockNotHeld(m_total_bytes_sent_mutex);

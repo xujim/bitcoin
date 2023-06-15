@@ -181,6 +181,7 @@ extern CRPCTable tableRPC;
 void StartRPC();
 void InterruptRPC();
 void StopRPC();
+//TODO: 关于RPC是什么时候调用呢？服务提供是哪方？相关函数是在HTTPReq_JSONRPC中被调用，HTTPReq_JSONRPC似乎是服务端
 std::string JSONRPCExecBatch(const JSONRPCRequest& jreq, const UniValue& vReq);
 
 // Retrieves any serialization flags requested in command line argument

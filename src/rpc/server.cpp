@@ -71,7 +71,7 @@ static struct CRPCSignals
 
 void RPCServer::OnStarted(std::function<void ()> slot)
 {
-    g_rpcSignals.Started.connect(slot);
+    g_rpcSignals.Started.connect(slot); //后面调用g_rpcSignals.Started()即可发送signal
 }
 
 void RPCServer::OnStopped(std::function<void ()> slot)
@@ -252,9 +252,10 @@ static RPCHelpMan getrpcinfo()
     };
 }
 
+//常用的执行rpc的函数
 static const CRPCCommand vRPCCommands[]{
     /* Overall control/query calls */
-    {"control", &getrpcinfo},
+    {"control", &getrpcinfo}, //getrpcinfo是actor
     {"control", &help},
     {"control", &stop},
     {"control", &uptime},
@@ -519,7 +520,7 @@ UniValue CRPCTable::execute(const JSONRPCRequest &request) const
     auto it = mapCommands.find(request.strMethod);
     if (it != mapCommands.end()) {
         UniValue result;
-        if (ExecuteCommands(it->second, request, result)) {
+        if (ExecuteCommands(it->second, request, result)) { //执行的是CRPCCommand，其actor是command执行的最终函数
             return result;
         }
     }
@@ -531,6 +532,7 @@ static bool ExecuteCommand(const CRPCCommand& command, const JSONRPCRequest& req
     try {
         RPCCommandExecution execution(request.strMethod);
         // Execute, convert arguments to array if necessary
+        // actor是执行的函数
         if (request.params.isObject()) {
             return command.actor(transformNamedArguments(request, command.argNames), result, last_handler);
         } else {

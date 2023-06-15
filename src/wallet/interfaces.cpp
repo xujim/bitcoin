@@ -571,6 +571,7 @@ public:
     ~WalletLoaderImpl() override { UnloadWallets(m_context); }
 
     //! ChainClient methods
+    //!TODO: 为何wallet也要注册handler？这里的chain是什么？
     void registerRpcs() override
     {
         for (const CRPCCommand& command : GetWalletRPCCommands()) {
@@ -579,7 +580,7 @@ public:
                 wallet_request.context = &m_context;
                 return command.actor(wallet_request, result, last_handler);
             }, command.argNames, command.unique_id);
-            m_rpc_handlers.emplace_back(m_context.chain->handleRpc(m_rpc_commands.back()));
+            m_rpc_handlers.emplace_back(m_context.chain->handleRpc(m_rpc_commands.back()));//生成一个handler
         }
     }
     bool verify() override { return VerifyWallets(m_context); }

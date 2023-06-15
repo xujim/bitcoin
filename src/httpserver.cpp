@@ -375,6 +375,7 @@ static void libevent_log_cb(int severity, const char *msg)
     LogPrintLevel(BCLog::LIBEVENT, level, "%s\n", msg);
 }
 
+//基于evhttp实现http服务器
 bool InitHTTPServer()
 {
     if (!InitHTTPAllowList())
@@ -433,6 +434,7 @@ void UpdateHTTPServerLogging(bool enable) {
 static std::thread g_thread_http;
 static std::vector<std::thread> g_thread_http_workers;
 
+//启动服务
 void StartHTTPServer()
 {
     LogPrint(BCLog::HTTP, "Starting HTTP server\n");
@@ -441,7 +443,7 @@ void StartHTTPServer()
     g_thread_http = std::thread(ThreadHTTP, eventBase);
 
     for (int i = 0; i < rpcThreads; i++) {
-        g_thread_http_workers.emplace_back(HTTPWorkQueueRun, g_work_queue.get(), i);
+        g_thread_http_workers.emplace_back(HTTPWorkQueueRun, g_work_queue.get(), i);//调度任务HTTPWorkQueueRun，后两个参数是其参数
     }
 }
 

@@ -67,6 +67,7 @@ public:
         MSG_ERROR = (ICON_ERROR | BTN_OK | MODAL)
     };
 
+//这是很好的封装，通过boost::signal2添加消息订阅，第一个参数就是接收的函数，后面是其参数
 #define ADD_SIGNALS_DECL_WRAPPER(signal_name, rtype, ...)                                  \
     rtype signal_name(__VA_ARGS__);                                                        \
     using signal_name##Sig = rtype(__VA_ARGS__);                                           \
