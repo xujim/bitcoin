@@ -22,6 +22,8 @@
 #include <cmath>
 #include <optional>
 
+//网络节点地址管理模块
+
 /** Over how many buckets entries with tried addresses from a single group (/16 for IPv4) are spread */
 static constexpr uint32_t ADDRMAN_TRIED_BUCKETS_PER_GROUP{8};
 /** Over how many buckets entries with new addresses originating from a single group are spread */

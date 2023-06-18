@@ -27,6 +27,8 @@
 #include <memory>
 #include <optional>
 
+// level db数据库包装
+
 class CBitcoinLevelDBLogger : public leveldb::Logger {
 public:
     // This code is adapted from posix_logger.h, which is why it is using vsprintf.
