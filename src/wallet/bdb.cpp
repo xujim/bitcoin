@@ -31,7 +31,7 @@
 
 namespace wallet {
 namespace {
-
+// verify wallet database integrity  确认钱包数据库的完整性
 //! Make sure database has a unique fileid within the environment. If it
 //! doesn't, throw an error. BDB caches do not work properly when more than one
 //! open database has the same fileid (values written to one database may show
@@ -62,6 +62,7 @@ RecursiveMutex cs_db;
 std::map<std::string, std::weak_ptr<BerkeleyEnvironment>> g_dbenvs GUARDED_BY(cs_db); //!< Map from directory name to db environment.
 } // namespace
 
+// 判断db文件是否完全一样
 bool WalletDatabaseFileId::operator==(const WalletDatabaseFileId& rhs) const
 {
     return memcmp(value, &rhs.value, sizeof(value)) == 0;
@@ -77,9 +78,9 @@ std::shared_ptr<BerkeleyEnvironment> GetBerkeleyEnv(const fs::path& env_director
 {
     LOCK(cs_db);
     auto inserted = g_dbenvs.emplace(fs::PathToString(env_directory), std::weak_ptr<BerkeleyEnvironment>());
-    if (inserted.second) {
+    if (inserted.second) {//!TODO: 这里怎么看？理论上inserted.second通过默认构造应该为空啊？
         auto env = std::make_shared<BerkeleyEnvironment>(env_directory, use_shared_memory);
-        inserted.first->second = env;
+        inserted.first->second = env; //!TODO: first不是应该是string吗？
         return env;
     }
     return inserted.first->second.lock();
@@ -87,6 +88,8 @@ std::shared_ptr<BerkeleyEnvironment> GetBerkeleyEnv(const fs::path& env_director
 
 //
 // BerkeleyBatch
+//Berkeley DB是一个开源的文件数据库，介于关系数据库与内存数据库之间，使用方式与内存数据库类似，
+//它提供的是一系列直接访问数据库的函数，而不是像关系数据库那样需要网络通讯、SQL解析等步骤。
 //
 
 void BerkeleyEnvironment::Close()
@@ -138,6 +141,8 @@ BerkeleyEnvironment::~BerkeleyEnvironment()
     Close();
 }
 
+//!TODO: bdb是berkeley db的缩写。Berkeley DB是一个开源的文件数据库，介于关系数据库与内存数据库之间，
+//使用方式与内存数据库类似，它提供的是一系列直接访问数据库的函数，而不是像关系数据库那样需要网络通讯、SQL解析等步骤。
 bool BerkeleyEnvironment::Open(bilingual_str& err)
 {
     if (fDbEnvInit) {
@@ -271,6 +276,7 @@ SafeDbt::operator Dbt*()
     return &m_dbt;
 }
 
+//!NOTES: 主要是调用Db数据库的verify函数进行了数据库完整性验证
 bool BerkeleyDatabase::Verify(bilingual_str& errorStr)
 {
     fs::path walletDir = env->Directory();

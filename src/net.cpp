@@ -2039,6 +2039,7 @@ void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
 
 Mutex NetEventsInterface::g_msgproc_mutex;
 
+//connection manager，用于处理消息接收
 void CConnman::ThreadMessageHandler()
 {
     LOCK(NetEventsInterface::g_msgproc_mutex);
@@ -2311,7 +2312,7 @@ bool CConnman::InitBinds(const Options& options)
     return fBound;
 }
 
-//!TODO: 这是干嘛的？
+//!TODO: 这是干嘛的？连接p2p网络拉，参考：https://www.jianshu.com/p/ad47595e7e4f
 bool CConnman::Start(CScheduler& scheduler, const Options& connOptions)
 {
     AssertLockNotHeld(m_total_bytes_sent_mutex);
@@ -2504,7 +2505,7 @@ void CConnman::StopNodes()
 void CConnman::DeleteNode(CNode* pnode)
 {
     assert(pnode);
-    m_msgproc->FinalizeNode(*pnode);
+    m_msgproc->FinalizeNode(*pnode); //删除节点
     delete pnode;
 }
 

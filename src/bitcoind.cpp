@@ -153,6 +153,7 @@ static bool AppInit(NodeContext& node, int argc, char* argv[])
     std::any context{&node};
     try
     {
+        //!TODO:读取配置文件中的信息——不知道配置文件的信息具体是哪些？据说可以自己ICO
         if (auto error = common::InitConfig(args)) {
             return InitError(error->message, error->details);
         }

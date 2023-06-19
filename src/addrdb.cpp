@@ -180,7 +180,7 @@ bool DumpPeerAddresses(const ArgsManager& args, const AddrMan& addr)
 
 void ReadFromStream(AddrMan& addr, CDataStream& ssPeers)
 {
-    DeserializeDB(ssPeers, addr, false);
+    DeserializeDB(ssPeers, addr, false); //将ssPeers中的地址信息反序列化到addr
 }
 
 util::Result<std::unique_ptr<AddrMan>> LoadAddrman(const NetGroupManager& netgroupman, const ArgsManager& args)

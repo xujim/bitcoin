@@ -54,7 +54,7 @@ struct AddressPosition {
         : tried{tried_in}, multiplicity{multiplicity_in}, bucket{bucket_in}, position{position_in} {}
 };
 
-/** Stochastic address manager
+/** Stochastic(随机的) address manager
  *
  * Design goals:
  *  * Keep the address tables in-memory, and asynchronously dump the entire table to peers.dat.

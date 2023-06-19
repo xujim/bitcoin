@@ -1239,7 +1239,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         // Initialize addrman
         assert(!node.addrman);
         uiInterface.InitMessage(_("Loading P2P addresses…").translated);
-        auto addrman{LoadAddrman(*node.netgroupman, args)};
+        auto addrman{LoadAddrman(*node.netgroupman, args)};// 实例化peer节点的地址信息，可以是从peer.dat文件里读的 !TODO: 第一次加载会从哪里读呢？
         if (!addrman) return InitError(util::ErrorString(addrman));
         node.addrman = std::move(*addrman);
     }
@@ -1621,7 +1621,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         }
     } else {
         LogPrintf("Setting NODE_NETWORK on non-prune mode\n");
-        nLocalServices = ServiceFlags(nLocalServices | NODE_NETWORK);
+        nLocalServices = ServiceFlags(nLocalServices | NODE_NETWORK); // 一组该节点支持的本地服务列表，当前仅支持 NODE_NETWORK
     }
 
     // ********************************************************* Step 11: import blocks
@@ -1726,8 +1726,8 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     // Map ports with UPnP or NAT-PMP.
     StartMapPort(args.GetBoolArg("-upnp", DEFAULT_UPNP), args.GetBoolArg("-natpmp", DEFAULT_NATPMP));
 
-    CConnman::Options connOptions;
-    connOptions.nLocalServices = nLocalServices;
+    CConnman::Options connOptions; //网络连接配置？
+    connOptions.nLocalServices = nLocalServices; // 一组该节点支持的本地服务列表，当前仅支持 NODE_NETWORK
     connOptions.nMaxConnections = nMaxConnections;
     connOptions.m_max_outbound_full_relay = std::min(MAX_OUTBOUND_FULL_RELAY_CONNECTIONS, connOptions.nMaxConnections);
     connOptions.m_max_outbound_block_relay = std::min(MAX_BLOCK_RELAY_ONLY_CONNECTIONS, connOptions.nMaxConnections-connOptions.m_max_outbound_full_relay);
@@ -1866,6 +1866,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     connOptions.m_i2p_accept_incoming = args.GetBoolArg("-i2pacceptincoming", DEFAULT_I2P_ACCEPT_INCOMING);
 
+    //!TODO: 连接p2p网络
     if (!node.connman->Start(*node.scheduler, connOptions)) {
         return false;
     }

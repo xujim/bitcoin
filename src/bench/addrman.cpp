@@ -104,7 +104,7 @@ static void AddrManSelectFromAlmostEmpty(benchmark::Bench& bench)
     AddrMan addrman{EMPTY_NETGROUPMAN, /*deterministic=*/false, ADDRMAN_CONSISTENCY_CHECK_RATIO};
 
     // Add one address to the new table
-    CService addr = Lookup("250.3.1.1", 8333, false).value();
+    CService addr = Lookup("250.3.1.1", 8333, false).value(); //!TODO: 节点p2p默认端口号是8333
     addrman.Add({CAddress(addr, NODE_NONE)}, addr);
 
     bench.run([&] {

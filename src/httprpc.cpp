@@ -124,6 +124,7 @@ static bool multiUserAuthorized(std::string strUserPass)
 
 static bool RPCAuthorized(const std::string& strAuth, std::string& strAuthUsernameOut)
 {
+    //!TODO: 首先判断在配置文件中的rpcuser和rpcpassword两个字段不能为空。这个配置文件是bitcoin.conf？
     if (strRPCUserColonPass.empty()) // Belt-and-suspenders measure if InitRPCAuthentication was not called
         return false;
     if (strAuth.substr(0, 6) != "Basic ")

@@ -23,6 +23,7 @@ class CBlockIndex;
 class CChainParams;
 class CScript;
 
+//!TODO: 挖矿协议--Stratum协议：https://zhuanlan.zhihu.com/p/571589377
 namespace Consensus { struct Params; };
 
 namespace node {

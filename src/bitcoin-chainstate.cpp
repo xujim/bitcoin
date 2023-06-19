@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
         << "\t" << "Snapshot Active: " << std::boolalpha << chainman.IsSnapshotActive() << std::noboolalpha << std::endl
         << "\t" << "Active Height: " << chainman.ActiveHeight() << std::endl
         << "\t" << "Active IBD: " << std::boolalpha << chainman.ActiveChainstate().IsInitialBlockDownload() << std::noboolalpha << std::endl;
-        CBlockIndex* tip = chainman.ActiveTip();
+        CBlockIndex* tip = chainman.ActiveTip(); //!TODO: Active Tip是啥？应该就是block index
         if (tip) {
             std::cout << "\t" << tip->ToString() << std::endl;
         }
