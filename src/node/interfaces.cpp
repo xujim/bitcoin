@@ -397,13 +397,14 @@ public:
 bool FillBlock(const CBlockIndex* index, const FoundBlock& block, UniqueLock<RecursiveMutex>& lock, const CChain& active, const BlockManager& blockman)
 {
     if (!index) return false;
-    if (block.m_hash) *block.m_hash = index->GetBlockHash();
+    if (block.m_hash) *block.m_hash = index->GetBlockHash(); //这里是所谓的nonce值吗？
     if (block.m_height) *block.m_height = index->nHeight;
     if (block.m_time) *block.m_time = index->GetBlockTime();
     if (block.m_max_time) *block.m_max_time = index->GetBlockTimeMax();
     if (block.m_mtp_time) *block.m_mtp_time = index->GetMedianTimePast();
     if (block.m_in_active_chain) *block.m_in_active_chain = active[index->nHeight] == index;
     if (block.m_locator) { *block.m_locator = GetLocator(index); }
+    //!TODO: 这里怎么理解？next block不为空的时候反而要fill block？
     if (block.m_next_block) FillBlock(active[index->nHeight] == index ? active[index->nHeight + 1] : nullptr, *block.m_next_block, lock, active, blockman);
     if (block.m_data) {
         REVERSE_LOCK(lock);

@@ -193,6 +193,18 @@ struct QueuedBlock {
 };
 
 /**
+ * !NOTES: cs_main是什么？
+ * What is cs_main?
+cs_main is a recursive mutex which is used to ensure that validation is carried out in an atomic way. 
+It guards access to validation specific variables (such as CChainState and CNode) or mempool variables (in net_processing). The lock of cs_main is in validation.cpp.
+Why is it called cs_main?
+cs_main was the mutex ("critical section") that protected data in Satoshi's original main.cpp file. 
+(main.cpp was entirely removed in PR 9260 in December 2016.) In theory cs_main could be renamed today as main.cpp 
+has since been refactored into smaller files but every time you rename something in a header file, everyone needs 
+to recompile any file that includes that header.
+A long-term goal is to separate out those different bits of data that are protected by cs_main, so that eventually cs_main only protects the data inside validation.
+
+These were answered by John Newbery and other participants of the May 12th 2021 Bitcoin Core PR review club.
  * Data structure for an individual peer. This struct is not protected by
  * cs_main since it does not contain validation-critical data.
  *
@@ -234,6 +246,7 @@ struct Peer {
 
     /** Protects block inventory data members */
     Mutex m_block_inv_mutex;
+    //!TODO: 什么是inv message
     /** List of blocks that we'll announce via an `inv` message.
      * There is no final sorting before sending, as they are always sent
      * immediately and in the order requested. */
@@ -1472,6 +1485,7 @@ void PeerManagerImpl::UpdateLastBlockAnnounceTime(NodeId node, int64_t time_in_s
     if (state) state->m_last_block_announcement = time_in_seconds;
 }
 
+// InitializeNode 函数是初始化结点状态的函数。FinalizeNode函数是我们从比特币网络中接收完数据后的收尾工作，包括对传输中的区块数据和交易数据和其他的一些数据
 void PeerManagerImpl::InitializeNode(CNode& node, ServiceFlags our_services)
 {
     NodeId nodeid = node.GetId();

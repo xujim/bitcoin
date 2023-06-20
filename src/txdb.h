@@ -58,6 +58,8 @@ struct CoinsViewOptions {
     int simulate_crash_ratio = 0;
 };
 
+//通过代码可以看到是对ClevelDBWrapper类对象的操作，而且是继承自CCoinsView的类。所以也有了CCoinsView的操作。而CCoinsView就是对我们所拥有多少比特币的操作
+//所以这些函数的操作都在CCoinsViewDB中进行实现了。而且CCoins就是我们的UTXO（未花费的交易输出 ）的封装
 /** CCoinsView backed by the coin database (chainstate/) */
 class CCoinsViewDB final : public CCoinsView
 {
@@ -68,7 +70,9 @@ protected:
 public:
     explicit CCoinsViewDB(DBParams db_params, CoinsViewOptions options);
 
+    //如何计算的我们的余额（我有多少比特币）也就是有多少UTXO的值?https://www.jianshu.com/p/56a323f1a41c
     bool GetCoin(const COutPoint &outpoint, Coin &coin) const override;
+
     bool HaveCoin(const COutPoint &outpoint) const override;
     uint256 GetBestBlock() const override;
     std::vector<uint256> GetHeadBlocks() const override;
@@ -86,6 +90,7 @@ public:
     std::optional<fs::path> StoragePath() { return m_db->StoragePath(); }
 };
 
+//用于处理区块的数据库
 /** Access to the block database (blocks/index/) */
 class CBlockTreeDB : public CDBWrapper
 {

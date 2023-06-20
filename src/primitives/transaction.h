@@ -31,6 +31,7 @@
  */
 static const int SERIALIZE_TRANSACTION_NO_WITNESS = 0x40000000;
 
+//!NOTES: 一个COutPoint对象指向来源交易的某一笔输出交易，所以COutPoint的hash值就是指向革个CTxOut的哈希值,n是vout序列的序列号
 /** An outpoint - a combination of a transaction hash and an index n into its vout */
 class COutPoint
 {
