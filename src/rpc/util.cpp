@@ -565,6 +565,7 @@ std::string RPCExamples::ToDescriptionString() const
     return m_examples.empty() ? m_examples : "\nExamples:\n" + m_examples;
 }
 
+//真正执行其中的func
 UniValue RPCHelpMan::HandleRequest(const JSONRPCRequest& request) const
 {
     if (request.mode == JSONRPCRequest::GET_ARGS) {
@@ -588,7 +589,7 @@ UniValue RPCHelpMan::HandleRequest(const JSONRPCRequest& request) const
     if (!arg_mismatch.empty()) {
         throw JSONRPCError(RPC_TYPE_ERROR, strprintf("Wrong type passed:\n%s", arg_mismatch.write(4)));
     }
-    UniValue ret = m_fun(*this, request);
+    UniValue ret = m_fun(*this, request); //!NOTES: 执行func请求rpc
     if (gArgs.GetBoolArg("-rpcdoccheck", DEFAULT_RPC_DOC_CHECK)) {
         UniValue mismatch{UniValue::VARR};
         for (const auto& res : m_results.m_results) {

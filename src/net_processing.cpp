@@ -2960,6 +2960,10 @@ void PeerManagerImpl::ProcessHeadersMessage(CNode& pfrom, Peer& peer,
     return;
 }
 
+//什么是Orphan Block？
+//又称「孤儿区块」，在比特币网络，最长的区块链才是被认可的区块链，而如果该区块在不被认可的区块链，就称Orphan Block
+//但在技术文档中，它被描述为陈腐区块(Stale Block)。当两个矿工(或更多矿工)同时找到解决方案时，就会产生一个孤块。
+//在最长的主链确定之前，没有人可以知道区块是否称为孤块。
 bool PeerManagerImpl::ProcessOrphanTx(Peer& peer)
 {
     AssertLockHeld(g_msgproc_mutex);

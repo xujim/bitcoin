@@ -21,6 +21,9 @@
 /**
  * This implements a Golomb-coded set as defined in BIP 158. It is a
  * compact, probabilistic data structure for testing set membership.
+ * Golomb-compressed sets(GCS) 是一种空间利用率很高的数据结构，可以用于判断一个元素是否属于这个集合。
+ * 它与 Bloom Filter 非常类似，区别是它的压缩率更高，同时查询效率更低。
+ * 同样，GCS 也有将原本不属于集合的元素误判为属于的可能（false positive）。
  */
 class GCSFilter
 {

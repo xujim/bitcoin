@@ -5,6 +5,8 @@
 #ifndef BITCOIN_RPC_BLOCKCHAIN_H
 #define BITCOIN_RPC_BLOCKCHAIN_H
 
+//!NOTES: RPC目录封装了所有的rpc command实现，关于blockchain，mempool等等特性
+
 #include <consensus/amount.h>
 #include <core_io.h>
 #include <streams.h>

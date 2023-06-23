@@ -248,6 +248,7 @@ void BaseIndex::ThreadSync()
     }
 }
 
+//!TODO: 啥意思？
 bool BaseIndex::Commit()
 {
     // Don't commit anything if we haven't indexed any block yet

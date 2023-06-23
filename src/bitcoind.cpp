@@ -248,6 +248,7 @@ static bool AppInit(NodeContext& node, int argc, char* argv[])
     return fRet;
 }
 
+//!NOTES: 入口函数
 MAIN_FUNCTION
 {
 #ifdef WIN32
@@ -262,10 +263,11 @@ MAIN_FUNCTION
         return exit_status;
     }
 
-    SetupEnvironment();
+    SetupEnvironment();//环境初始化
 
     // Connect bitcoind signal handlers
     noui_connect();
 
+    //!NOTES: 调用初始化函数AppInit
     return (AppInit(node, argc, argv) ? EXIT_SUCCESS : EXIT_FAILURE);
 }

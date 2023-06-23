@@ -14,6 +14,8 @@
 #include <util/check.h>
 #include <util/moneystr.h>
 
+//最终性（最终确定性的简称）是指区块链上的交易达到了交易状态确认的状。成功的交易不会回滚（Rollback），失败的交易也不会因为时间推移而成功
+//!TODO: 这个算法怎么理解？
 bool IsFinalTx(const CTransaction &tx, int nBlockHeight, int64_t nBlockTime)
 {
     if (tx.nLockTime == 0)

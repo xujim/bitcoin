@@ -106,6 +106,7 @@ static RPCHelpMan getnetworkhashps()
                     HelpExampleCli("getnetworkhashps", "")
             + HelpExampleRpc("getnetworkhashps", "")
                 },
+        //RPC指令的真正实现
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
     ChainstateManager& chainman = EnsureAnyChainman(request.context);

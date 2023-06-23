@@ -4,6 +4,10 @@
 `libminisketch` is an optimized standalone MIT-licensed library with C API for constructing and decoding *set sketches*, which can be used for compact set reconciliation and other applications.
 It is an implementation of the PinSketch<sup>[[1]](#myfootnote1)</sup> algorithm. An explanation of the algorithm can be found [here](doc/math.md).
 
+https://baijiahao.baidu.com/s?id=1622148106260398535&wfr=spider&for=pc
+Minisketch原本是一个项目中的组成部分，这个项目旨在研究如何利用配置对账（set reconciliation）来在比特币节点之间传递交易信息，即“配置对账中继”（Set Reconciliation Relay，简称SRR）。SRR的目标就是要大幅度降低运行比特币全节点的带宽要求。
+由Minisketch实现的配置对账可以更加高效地利用带宽，不是简单地将所有的数据列都发送过去，而是让节点自己产生数据列的“素描（sketch）”。节点接着把这个“素描”发给其他节点进行对比。这个“素描”的大小只与节点之间差异数量期望有关，而与整个数据组的大小无关。尽管如此，节点仍然能够确定他们从其他节点需要哪些数据。
+这个解决方案的美妙之处就在于完全不需要对比特币网络共识规则做任何改动。当双方的软件都支持SRR协议的时候，SRR就会启动，而且不会对不想参与的节点运营者产生任何影响。
 ## Sketches for set reconciliation
 
 Sketches, as produced by this library, can be seen as "set checksums" with two peculiar properties:
