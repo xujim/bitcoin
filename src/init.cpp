@@ -1608,6 +1608,8 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     }
 
     if (args.GetBoolArg("-coinstatsindex", DEFAULT_COINSTATSINDEX)) {
+        //Maintain coinstats index used by the gettxoutsetinfo RPC (default: %u)
+        //创建节点的coin stats index，用于快速获取utxo信息
         g_coin_stats_index = std::make_unique<CoinStatsIndex>(interfaces::MakeChain(node), /*cache_size=*/0, false, fReindex);
         if (!g_coin_stats_index->Start()) {
             return false;

@@ -10,6 +10,7 @@
 
 #include <limits>
 
+//!TODO: 这里的deployment是什么意思？
 /** Determine if a deployment is active for the next block */
 inline bool DeploymentActiveAfter(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::BuriedDeployment dep, [[maybe_unused]] VersionBitsCache& versionbitscache)
 {

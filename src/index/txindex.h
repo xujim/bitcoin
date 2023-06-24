@@ -10,6 +10,7 @@
 static constexpr bool DEFAULT_TXINDEX{false};
 
 /**
+ * 其实是中索引机制，索引数据保存到level db
  * TxIndex is used to look up transactions included in the blockchain by hash.
  * The index is written to a LevelDB database and records the filesystem
  * location of each transaction by transaction hash.
@@ -36,7 +37,8 @@ public:
     // Destructor is declared because this class contains a unique_ptr to an incomplete type.
     virtual ~TxIndex() override;
 
-    /// Look up a transaction by hash.
+    /// Look up a transaction by hash. 
+    ///根据tx的hash查找所在block的hash及tx
     ///
     /// @param[in]   tx_hash  The hash of the transaction to be returned.
     /// @param[out]  block_hash  The hash of the block the transaction is found in.

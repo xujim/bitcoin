@@ -834,6 +834,7 @@ CoinStatsHashType ParseHashType(const std::string& hash_type_input)
 
 /**
  * Calculate statistics about the unspent transaction output set
+ * 会基于CoinStatsIndex实现
  *
  * @param[in] index_requested Signals if the coinstatsindex should be used (when available).
  */
@@ -1382,6 +1383,7 @@ struct CompareBlocksByHeight
 
 static RPCHelpMan getchaintips()
 {
+    //chain有好几个状态：status of the chain (active, valid-fork, valid-headers, headers-only, invalid),见下方详细
     return RPCHelpMan{"getchaintips",
                 "Return information about all known tips in the block tree,"
                 " including the main chain as well as orphaned branches.\n",

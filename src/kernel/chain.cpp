@@ -12,7 +12,7 @@ class CBlock;
 namespace kernel {
 interfaces::BlockInfo MakeBlockInfo(const CBlockIndex* index, const CBlock* data)
 {
-    interfaces::BlockInfo info{index ? *index->phashBlock : uint256::ZERO};
+    interfaces::BlockInfo info{index ? *index->phashBlock : uint256::ZERO}; //构造函数参数是block的hash
     if (index) {
         info.prev_hash = index->pprev ? index->pprev->phashBlock : nullptr;
         info.height = index->nHeight;

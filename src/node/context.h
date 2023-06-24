@@ -34,6 +34,7 @@ class KernelNotifications;
 
 //! NodeContext struct containing references to chain state and connection
 //! state.
+//! 更多是对一些全局对象的封装，如此避免这些全局变量过于分散。
 //!
 //! This is used by init, rpc, and test code to pass object references around
 //! without needing to declare the same variables and parameters repeatedly, or
@@ -47,15 +48,24 @@ struct NodeContext {
     std::unique_ptr<kernel::Context> kernel;
     //! Init interface for initializing current process and connecting to other processes.
     interfaces::Init* init{nullptr};
-    std::unique_ptr<AddrMan> addrman;
-    std::unique_ptr<CConnman> connman;
+    //! 地址管理
+    std::unique_ptr<AddrMan> addrman; 
+    //! 链接管理
+    std::unique_ptr<CConnman> connman; 
+    //! tx的缓存池
     std::unique_ptr<CTxMemPool> mempool;
+    //! 网络组
     std::unique_ptr<const NetGroupManager> netgroupman;
+    //! 根据policy统计fee
     std::unique_ptr<CBlockPolicyEstimator> fee_estimator;
+    //! 对等节点管理
     std::unique_ptr<PeerManager> peerman;
+    //! 链状态管理
     std::unique_ptr<ChainstateManager> chainman;
+    //! 封禁节点的管理
     std::unique_ptr<BanMan> banman;
     ArgsManager* args{nullptr}; // Currently a raw pointer because the memory is not managed by this struct
+    //! 当前链
     std::unique_ptr<interfaces::Chain> chain;
     //! List of all chain clients (wallet processes or other client) connected to node.
     std::vector<std::unique_ptr<interfaces::ChainClient>> chain_clients;

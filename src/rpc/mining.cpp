@@ -116,6 +116,7 @@ static RPCHelpMan getnetworkhashps()
     };
 }
 
+//生成一个block
 static bool GenerateBlock(ChainstateManager& chainman, CBlock& block, uint64_t& max_tries, std::shared_ptr<const CBlock>& block_out, bool process_new_block)
 {
     block_out.reset();

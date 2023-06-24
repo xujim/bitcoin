@@ -17,6 +17,7 @@ static const char* const DEFAULT_BLOCKFILTERINDEX = "0";
 /** Interval between compact filter checkpoints. See BIP 157. */
 static constexpr int CFCHECKPT_INTERVAL = 1000;
 
+//构建BlockFilter的索引，BlockFilter基于golomc filter而非bloom filter
 /**
  * BlockFilterIndex is used to store and retrieve block filters, hashes, and headers for a range of
  * blocks by height. An index is constructed for each supported filter type with its own database
@@ -61,6 +62,7 @@ public:
     BlockFilterType GetFilterType() const { return m_filter_type; }
 
     /** Get a single filter by block. */
+    //!TODO:单个block也有filter？
     bool LookupFilter(const CBlockIndex* block_index, BlockFilter& filter_out) const;
 
     /** Get a single filter header by block. */

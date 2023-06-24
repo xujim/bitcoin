@@ -208,6 +208,7 @@ static GCSFilter::ElementSet BasicFilterElements(const CBlock& block,
     return elements;
 }
 
+//这里BlockFilter依赖golomb filter实现，而非bloom filter
 BlockFilter::BlockFilter(BlockFilterType filter_type, const uint256& block_hash,
                          std::vector<unsigned char> filter, bool skip_decode_check)
     : m_filter_type(filter_type), m_block_hash(block_hash)

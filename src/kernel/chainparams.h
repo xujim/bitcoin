@@ -70,6 +70,7 @@ struct ChainTxData {
 };
 
 /**
+ * 一个比特币系统的参数信息，这些参数是可以后期配置修改的
  * CChainParams defines various tweakable parameters of a given instance of the
  * Bitcoin system.
  */

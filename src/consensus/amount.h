@@ -8,6 +8,7 @@
 
 #include <cstdint>
 
+//BTC 的量纲定义
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
 

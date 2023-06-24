@@ -13,6 +13,7 @@ struct Context;
 
 /**
  *  Ensure a usable environment with all necessary library support.
+ *  如ECC相关环境，随机数相关
  */
 [[nodiscard]] util::Result<void> SanityChecks(const Context&);
 } // namespace kernel

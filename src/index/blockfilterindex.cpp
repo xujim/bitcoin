@@ -12,6 +12,8 @@
 #include <util/fs_helpers.h>
 #include <validation.h>
 
+//!TODO:存了active chain或不是上的block相关filter，那什么是active chain？——应该是指有效的当前最长链吧
+//
 /* The index database stores three items for each block: the disk location of the encoded filter,
  * its dSHA256 hash, and the header. Those belonging to blocks on the active chain are indexed by
  * height, and those belonging to blocks that have been reorganized out of the active chain are
@@ -220,6 +222,7 @@ bool BlockFilterIndex::CustomAppend(const interfaces::BlockInfo& block)
     if (block.height > 0) {
         // pindex variable gives indexing code access to node internals. It
         // will be removed in upcoming commit
+        //WITH_LOCK通过一个lock及lambda函数调用LookupBlockIndex
         const CBlockIndex* pindex = WITH_LOCK(cs_main, return m_chainstate->m_blockman.LookupBlockIndex(block.hash));
         if (!m_chainstate->m_blockman.UndoReadFromDisk(block_undo, *pindex)) {
             return false;
@@ -239,6 +242,7 @@ bool BlockFilterIndex::CustomAppend(const interfaces::BlockInfo& block)
         prev_header = read_out.second.header;
     }
 
+    //构建BlockFilter的索引
     BlockFilter filter(m_filter_type, *Assert(block.data), block_undo);
 
     size_t bytes_written = WriteFilterToDisk(m_next_filter_pos, filter);

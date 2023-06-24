@@ -19,6 +19,8 @@
 #include <vector>
 
 //布谷鸟cache https://zhuanlan.zhihu.com/p/594818514
+//布谷鸟哈希（Cuckoo hash），cuckoo hash是2002年提出来的老算法了，它可以应用在数据库的哈希表中，
+//查找（lookup）非常快，而且可以向量化查找，这到底一种什么样的算法呢？一起来看看
 
 /** High-performance cache primitives.
  *

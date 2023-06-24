@@ -28,6 +28,7 @@ enum class CoinStatsHashType {
     NONE,
 };
 
+//一个区块相关的stats
 struct CCoinsStats {
     int nHeight{0};
     uint256 hashBlock{};
