@@ -187,7 +187,7 @@ public:
     //! (memory only) Number of transactions in the chain up to and including this block.
     //! This value will be non-zero only if and only if transactions for this block and all its parents are available.
     //! Change to 64-bit type before 2024 (assuming worst case of 60 byte transactions).
-    //!
+    //! 链上截止到及包括当前块所有的tx数量
     //! Note: this value is faked during use of a UTXO snapshot because we don't
     //! have the underlying block data available during snapshot load.
     //! @sa AssumeutxoData

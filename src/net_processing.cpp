@@ -246,7 +246,7 @@ struct Peer {
 
     /** Protects block inventory data members */
     Mutex m_block_inv_mutex;
-    //!TODO: 什么是inv message
+    //!NOTES: 什么是inv message, 库存tx,可参考书
     /** List of blocks that we'll announce via an `inv` message.
      * There is no final sorting before sending, as they are always sent
      * immediately and in the order requested. */
@@ -2960,10 +2960,13 @@ void PeerManagerImpl::ProcessHeadersMessage(CNode& pfrom, Peer& peer,
     return;
 }
 
-//什么是Orphan Block？
+//什么是Orphan Block？or stale block
 //又称「孤儿区块」，在比特币网络，最长的区块链才是被认可的区块链，而如果该区块在不被认可的区块链，就称Orphan Block
 //但在技术文档中，它被描述为陈腐区块(Stale Block)。当两个矿工(或更多矿工)同时找到解决方案时，就会产生一个孤块。
 //在最长的主链确定之前，没有人可以知道区块是否称为孤块。
+//orphan block: Blocks whose parent block has not been processed by the local node, so they can’t be fully validated yet
+//Block which were successfully mined but which isn’t included on the current best block chain, 
+//likely because some other block at the same height had its chain extended first.
 bool PeerManagerImpl::ProcessOrphanTx(Peer& peer)
 {
     AssertLockHeld(g_msgproc_mutex);

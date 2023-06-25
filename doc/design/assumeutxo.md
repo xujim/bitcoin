@@ -7,6 +7,12 @@ The RPC commands `dumptxoutset` and `loadtxoutset` (yet to be merged) are used t
 respectively generate and load UTXO snapshots. The utility script
 `./contrib/devtools/utxo_snapshot.sh` may be of use.
 
+"assumeutxo"是一个比特币的术语，它指的是一种特定类型的交易。在比特币的交易系统中，每个区块都包含了一定数量的交易记录，这些交易记录被称为"未确认交易"（unconfirmed transactions）。
+当一个人想要在比特币网络上进行一笔交易时，他们需要向网络发送一个交易请求，并支付一定的交易费用。这个交易请求被称为"猜测交易"（guess transaction），因为在发送交易请求时，交易者并不知道其他节点是否会接受这个请求。
+如果其他节点接受了这个请求，那么这个交易就会被确认为"已确认交易"（confirmed transactions）。这时，这个交易就可以被记录在区块中，并且所有人都可以查看这个交易的历史记录。
+而"assumeutxo"是指在没有确认交易的情况下进行的交易。在这种情况下，交易者发送了一个猜测交易，但是没有得到其他节点的确认，因此这笔交易并没有被记录在区块中。这意味着这笔交易没有被其他人所认可，交易的安全性和有效性无法得到保障。
+因此，在进行比特币交易时，需要确保所有的交易都已经被确认，并且不存在"assumeutxo"的情况
+
 ## General background
 
 - [assumeutxo proposal](https://github.com/jamesob/assumeutxo-docs/tree/2019-04-proposal/proposal)
@@ -59,6 +65,9 @@ considered active. This is the "traditional" mode of operation for bitcoind.
 | active chainstate | ibd |
 
 ### User loads a UTXO snapshot via `loadtxoutset` RPC
+
+UTXO snapshot是指对比特币系统中所有未确认的UTXO进行快照的过程。在这个过程中，系统会对所有未确认的UTXO进行检索和统计，并将其存储在一个特定的数据结构中。这个数据结构被称为UTXO set，其中包括了所有未确认的UTXO的状态、输入值、输出值和交易费用等信息。
+因此，UTXO snapshot是比特币系统中非常重要的一个技术，它用于记录每个区块中未确认的交易，并为所有交易的历史记录提供了基础
 
 `ChainstateManager` initializes a new chainstate (see `ActivateSnapshot()`) to load the
 snapshot contents into. During snapshot load and validation (see
