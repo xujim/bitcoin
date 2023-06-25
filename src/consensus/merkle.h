@@ -10,6 +10,7 @@
 #include <primitives/block.h>
 #include <uint256.h>
 
+//计算merkle树的hash
 uint256 ComputeMerkleRoot(std::vector<uint256> hashes, bool* mutated = nullptr);
 
 /*

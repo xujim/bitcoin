@@ -109,6 +109,7 @@ static void grind_task(uint32_t nBits, CBlockHeader header, uint32_t offset, uin
     }
 }
 
+//strPrint就是计算出来的nonce
 static int Grind(const std::vector<std::string>& args, std::string& strPrint)
 {
     if (args.size() != 1) {
@@ -130,6 +131,7 @@ static int Grind(const std::vector<std::string>& args, std::string& strPrint)
     int n_tasks = std::max(1u, std::thread::hardware_concurrency());
     threads.reserve(n_tasks);
     for (int i = 0; i < n_tasks; ++i) {
+        //将grind_task线程函数调度到线程池进行挖矿
         threads.emplace_back(grind_task, nBits, header, i, n_tasks, std::ref(found), std::ref(proposed_nonce));
     }
     for (auto& t : threads) {

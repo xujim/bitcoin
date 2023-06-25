@@ -21,6 +21,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+//mem pool存储了tx相关信息，这些tx未来可能是会package到一个block中的。其可以持久化到文件——通过mempool_persist.cpp中的dumpmempool之类的函数
+
 class CBlockIndex;
 
 struct LockPoints {

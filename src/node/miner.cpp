@@ -27,6 +27,8 @@
 #include <utility>
 
 namespace node {
+
+//!TODO: 更新什么时间？计算规则是怎么样的？    
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
 {
     int64_t nOldTime = pblock->nTime;
@@ -47,7 +49,7 @@ int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParam
 void RegenerateCommitments(CBlock& block, ChainstateManager& chainman)
 {
     CMutableTransaction tx{*block.vtx.at(0)};
-    tx.vout.erase(tx.vout.begin() + GetWitnessCommitmentIndex(block));
+    tx.vout.erase(tx.vout.begin() + GetWitnessCommitmentIndex(block));//!TODO: GetWitnessCommitmentIndex是啥意思？
     block.vtx.at(0) = MakeTransactionRef(tx);
 
     const CBlockIndex* prev_block = WITH_LOCK(::cs_main, return chainman.m_blockman.LookupBlockIndex(block.hashPrevBlock));
@@ -102,6 +104,8 @@ void BlockAssembler::resetBlock()
     nFees = 0;
 }
 
+//!TODO: 这个函数似乎仅仅塞了coinbase的tx，其他tx的通过addPackageTxs()-->AddToBlock()添加进pblocktemplate
+//但这里nonce没有设置
 std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& scriptPubKeyIn)
 {
     const auto time_start{SteadyClock::now()};
@@ -128,7 +132,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     pblock->nVersion = m_chainstate.m_chainman.m_versionbitscache.ComputeBlockVersion(pindexPrev, chainparams.GetConsensus());
     // -regtest only: allow overriding block.nVersion with
     // -blockversion=N to test forking scenarios
-    if (chainparams.MineBlocksOnDemand()) {
+    if (chainparams.MineBlocksOnDemand()) {//!TODO: mine blocks on demand是什么意思？
         pblock->nVersion = gArgs.GetIntArg("-blockversion", pblock->nVersion);
     }
 
@@ -139,6 +143,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     int nDescendantsUpdated = 0;
     if (m_mempool) {
         LOCK(m_mempool->cs);
+        //寻找价值最优的tx们，并将其通过AddToBlock添加到当前的blocktemplate
         addPackageTxs(*m_mempool, nPackagesSelected, nDescendantsUpdated);
     }
 
@@ -155,7 +160,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
     coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
-    pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
+    pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));//coinbase最为第一条tx
     pblocktemplate->vchCoinbaseCommitment = m_chainstate.m_chainman.GenerateCoinbaseCommitment(*pblock, pindexPrev);
     pblocktemplate->vTxFees[0] = -nFees;
 

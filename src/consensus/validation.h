@@ -159,7 +159,9 @@ static inline int64_t GetTransactionInputWeight(const CTxIn& txin)
     return ::GetSerializeSize(txin, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS) * (WITNESS_SCALE_FACTOR - 1) + ::GetSerializeSize(txin, PROTOCOL_VERSION) + ::GetSerializeSize(txin.scriptWitness.stack, PROTOCOL_VERSION);
 }
 
-/** Compute at which vout of the block's coinbase transaction the witness commitment occurs, or -1 if not found */
+/** Compute at which vout of the block's coinbase transaction the witness commitment occurs, or -1 if not found 
+ * !TODO: 什么是witness commitment
+*/
 inline int GetWitnessCommitmentIndex(const CBlock& block)
 {
     int commitpos = NO_WITNESS_COMMITMENT;
@@ -168,7 +170,7 @@ inline int GetWitnessCommitmentIndex(const CBlock& block)
             const CTxOut& vout = block.vtx[0]->vout[o];
             if (vout.scriptPubKey.size() >= MINIMUM_WITNESS_COMMITMENT &&
                 vout.scriptPubKey[0] == OP_RETURN &&
-                vout.scriptPubKey[1] == 0x24 &&
+                vout.scriptPubKey[1] == 0x24 && //!TODO: 这些魔法数字是啥意思？
                 vout.scriptPubKey[2] == 0xaa &&
                 vout.scriptPubKey[3] == 0x21 &&
                 vout.scriptPubKey[4] == 0xa9 &&

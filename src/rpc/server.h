@@ -106,6 +106,7 @@ public:
         : CRPCCommand(
               category,
               fn().m_name,
+              //HandleRequest执行rpc指令，这里基于HandleRequest构造command的actor——actor用于在server那边的回调
               [fn](const JSONRPCRequest& request, UniValue& result, bool) { result = fn().HandleRequest(request); return true; },
               fn().GetArgNames(),
               intptr_t(fn))
@@ -181,7 +182,7 @@ extern CRPCTable tableRPC;
 void StartRPC();
 void InterruptRPC();
 void StopRPC();
-//TODO: 关于RPC是什么时候调用呢？服务提供是哪方？相关函数是在HTTPReq_JSONRPC中被调用，HTTPReq_JSONRPC似乎是服务端
+//!NOTES:关于RPC是什么时候调用呢？服务提供是哪方？相关函数是在HTTPReq_JSONRPC中被调用，HTTPReq_JSONRPC似乎是服务端
 std::string JSONRPCExecBatch(const JSONRPCRequest& jreq, const UniValue& vReq);
 
 // Retrieves any serialization flags requested in command line argument

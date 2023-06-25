@@ -23,7 +23,7 @@ class CBlockIndex;
 class CChainParams;
 class CScript;
 
-//!TODO: 挖矿协议--Stratum协议：https://zhuanlan.zhihu.com/p/571589377
+//!TODO: 挖矿矿池协议--Stratum协议：https://zhuanlan.zhihu.com/p/571589377
 namespace Consensus { struct Params; };
 
 namespace node {
@@ -139,7 +139,7 @@ private:
     uint64_t nBlockTx;
     uint64_t nBlockSigOpsCost;
     CAmount nFees;
-    CTxMemPool::setEntries inBlock;
+    CTxMemPool::setEntries inBlock; //setEntries是个std的set
 
     // Chain context for the block
     int nHeight;

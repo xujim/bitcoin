@@ -18,6 +18,8 @@ static constexpr bool DEFAULT_COINSTATSINDEX{false};
 
 /**
  * CoinStatsIndex maintains statistics on the UTXO set.
+ * 调用GetUTXOStats获取相关tx信息的时候会用到这个结构
+ * Maintain coinstats index used by the gettxoutsetinfo RPC (default: %u)
  */
 class CoinStatsIndex final : public BaseIndex
 {

@@ -74,6 +74,8 @@ struct PruneLockInfo {
  *
  * This data is used mostly in `Chainstate` - information about, e.g.,
  * candidate tips is not maintained here.
+ * NOTES: chain有好几个状态：status of the chain (active, valid-fork, valid-headers, headers-only, invalid)
+ * 该类主要是针对block做管理，比如基于blockindex查询block，将block信息写入磁盘等等
  */
 class BlockManager
 {

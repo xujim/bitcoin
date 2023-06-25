@@ -7,4 +7,5 @@
 
 // Define G_TRANSLATION_FUN symbol in libbitcoinkernel library so users of the
 // library aren't required to export this symbol
+//!TODO: 这个函数的用处不太理解
 extern const std::function<std::string(const char*)> G_TRANSLATION_FUN = nullptr;

@@ -15,10 +15,12 @@ namespace kernel {
 
 util::Result<void> SanityChecks(const Context&)
 {
+    //主要验证ECC相关环境，如pubkey等
     if (!ECC_InitSanityCheck()) {
         return util::Error{Untranslated("Elliptic curve cryptography sanity check failure. Aborting.")};
     }
 
+    //验证随机数相关
     if (!Random_SanityCheck()) {
         return util::Error{Untranslated("OS cryptographic RNG sanity check failure. Aborting.")};
     }

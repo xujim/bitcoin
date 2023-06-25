@@ -694,6 +694,7 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
     TxValidationState& state = ws.m_state;
     std::unique_ptr<CTxMemPoolEntry>& entry = ws.m_entry;
 
+    //验证tx是否遵守共识
     if (!CheckTransaction(tx, state)) {
         return false; // state filled in by CheckTransaction
     }

@@ -357,6 +357,7 @@ bool IsDeprecatedRPCEnabled(const std::string& method)
     return find(enabled_methods.begin(), enabled_methods.end(), method) != enabled_methods.end();
 }
 
+//执行单词rpc，并将结果封装返回，这个函数的触发点是HTTP_RPCRequest
 static UniValue JSONRPCExecOne(JSONRPCRequest jreq, const UniValue& req)
 {
     UniValue rpc_result(UniValue::VOBJ);
@@ -364,6 +365,7 @@ static UniValue JSONRPCExecOne(JSONRPCRequest jreq, const UniValue& req)
     try {
         jreq.parse(req);
 
+        //!NOTES: execute最终执行的RPCCommand
         UniValue result = tableRPC.execute(jreq);
         rpc_result = JSONRPCReplyObj(result, NullUniValue, jreq.id);
     }
@@ -380,11 +382,12 @@ static UniValue JSONRPCExecOne(JSONRPCRequest jreq, const UniValue& req)
     return rpc_result;
 }
 
+//批量执行rpc
 std::string JSONRPCExecBatch(const JSONRPCRequest& jreq, const UniValue& vReq)
 {
     UniValue ret(UniValue::VARR);
     for (unsigned int reqIdx = 0; reqIdx < vReq.size(); reqIdx++)
-        ret.push_back(JSONRPCExecOne(jreq, vReq[reqIdx]));
+        ret.push_back(JSONRPCExecOne(jreq, vReq[reqIdx])); //执行rpc
 
     return ret.write() + "\n";
 }

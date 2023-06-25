@@ -8,10 +8,12 @@
 #include <flatfile.h>
 #include <serialize.h>
 
+//tx在磁盘存储的位置相关封装
 struct CDiskTxPos : public FlatFilePos
 {
     unsigned int nTxOffset{0}; // after header
 
+    //实现序列化和反序列化函数
     SERIALIZE_METHODS(CDiskTxPos, obj)
     {
         READWRITEAS(FlatFilePos, obj);

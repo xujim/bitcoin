@@ -11,6 +11,7 @@
 #include <uint256.h>
 #include <util/time.h>
 
+//基本的block结构，header可以单独用于spv最小化验证
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
  * requirements.  When they solve the proof-of-work, they broadcast the block
@@ -68,7 +69,7 @@ public:
 class CBlock : public CBlockHeader
 {
 public:
-    // network and disk
+    //! network and disk, vtx是block中tx的数组集合
     std::vector<CTransactionRef> vtx;
 
     // memory only

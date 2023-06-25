@@ -147,7 +147,9 @@ enum BlockStatus : uint32_t {
  * candidates to be the next block. A blockindex may have multiple pprev pointing
  * to it, but at most one of them can be part of the currently active branch.
  */
-//!NOTES: blockindex是某个节点？
+//!NOTES: 按书本来说，blockindex是某个节点的高度，这里是信息的聚合，可基于这个类查找block相关信息如hash等
+//CBlockIndex: Used to locate a block within the block chain. Includes the block's hash, 
+//a pointer to the block before it, and other fields.
 class CBlockIndex
 {
 public:

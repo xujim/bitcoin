@@ -466,6 +466,7 @@ public:
 class RpcHandlerImpl : public Handler
 {
 public:
+//!NOTES: CRPCCommand内含func，用于执行具体的rpc指令
     explicit RpcHandlerImpl(const CRPCCommand& command) : m_command(command), m_wrapped_command(&command)
     {
         m_command.actor = [this](const JSONRPCRequest& request, UniValue& result, bool last_handler) {

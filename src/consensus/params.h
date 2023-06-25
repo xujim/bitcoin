@@ -14,7 +14,7 @@
 #include <vector>
 
 namespace Consensus {
-
+//共识规则是会变化的，此时会导致分叉
 /**
  * A buried deployment is one where the height of the activation has been hardcoded into
  * the client implementation long after the consensus change has activated. See BIP 90.

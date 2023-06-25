@@ -18,6 +18,8 @@ struct CacheSizes {
     int64_t tx_index;
     int64_t filter_index;
 };
+
+//计算的是好几种cache的大小——见CacheSizes的结构
 CacheSizes CalculateCacheSizes(const ArgsManager& args, size_t n_indexes = 0);
 } // namespace node
 
