@@ -1594,6 +1594,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
             return InitError(util::ErrorString(result));
         }
 
+        //transaction index db  
         g_txindex = std::make_unique<TxIndex>(interfaces::MakeChain(node), cache_sizes.tx_index, false, fReindex);
         if (!g_txindex->Start()) {
             return false;

@@ -257,6 +257,13 @@ PartiallySignedTransaction ProcessPSBT(const std::string& psbt_string, const std
     return psbtx;
 }
 
+//!TODO: 依赖txindex配置，但这个txindex是对线上所有tx做索引吗？
+//By default, Bitcoin Core builds a database containing only the transactions related 
+//to the user’s wallet. If you want to be able to access any transaction with commands like getrawtransaction 
+//(see Exploring and Decoding Transactions), you need to configure Bitcoin Core to build a complete transaction index, 
+//which can be achieved with the txindex option. Set txindex=1 in the Bitcoin Core configuration file. 
+//If you don’t set this option at first and later set it to full indexing, you need to restart bitcoind with the -reindex 
+//option and wait for it to rebuild the index.
 static RPCHelpMan getrawtransaction()
 {
     return RPCHelpMan{
