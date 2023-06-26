@@ -169,7 +169,9 @@ private:
     uint256 hashBlock;
 };
 
-/** Abstract view on the open txout dataset. */
+/** Abstract view on the open txout dataset.
+ * CCoinsView是对mempool或者cache中的tx以coin的视角的一个封装
+ */
 class CCoinsView
 {
 public:
@@ -206,7 +208,9 @@ public:
 };
 
 
-/** CCoinsView backed by another CCoinsView */
+/** CCoinsView backed by another CCoinsView 
+ * 其实现依赖其背后的coinsview实现，比如有可能是coinviewdb，这是一种代理/组件的设计方案
+*/
 class CCoinsViewBacked : public CCoinsView
 {
 protected:

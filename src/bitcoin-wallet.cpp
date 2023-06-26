@@ -96,6 +96,7 @@ static std::optional<int> WalletAppInit(ArgsManager& args, int argc, char* argv[
     return std::nullopt;
 }
 
+//wallet的独立进程
 MAIN_FUNCTION
 {
     ArgsManager& args = gArgs;

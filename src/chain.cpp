@@ -18,6 +18,7 @@ std::string CBlockIndex::ToString() const
                      pprev, nHeight, hashMerkleRoot.ToString(), GetBlockHash().ToString());
 }
 
+//!TODO: 以block为头反向设置整个链——这个算法有点怪啊！这里确定block就是索引到一个chain的吗？否则是否会导致链乱掉了
 void CChain::SetTip(CBlockIndex& block)
 {
     CBlockIndex* pindex = &block;
@@ -42,11 +43,12 @@ std::vector<uint256> LocatorEntries(const CBlockIndex* index)
         int height = std::max(index->nHeight - step, 0);
         // Use skiplist.
         index = index->GetAncestor(height);
-        if (have.size() > 10) step *= 2;
+        if (have.size() > 10) step *= 2; //!TODO: 为何10个之后，step要*2?
     }
     return have;
 }
 
+//!TODO:根据这个函数的实现很难理解locator是用来干嘛的？为什么10个之后要增加步长？
 CBlockLocator GetLocator(const CBlockIndex* index)
 {
     return CBlockLocator{LocatorEntries(index)};

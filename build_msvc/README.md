@@ -43,7 +43,7 @@ cd build
 nmake
 nmake install
 ```
-
+// -platform win32-msvc
 One could speed up building with [`jom`](https://wiki.qt.io/Jom), a replacement for `nmake` which makes use of all CPU cores.
 
 To build Bitcoin Core without Qt, unload or disable the `bitcoin-qt`, `libbitcoin_qt` and `test_bitcoin-qt` projects.

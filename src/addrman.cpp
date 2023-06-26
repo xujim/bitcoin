@@ -288,7 +288,7 @@ void AddrManImpl::Unserialize(Stream& s_)
 
     // Deserialize entries from the new table.
     for (int n = 0; n < nNew; n++) {
-        AddrInfo& info = mapInfo[n];
+        AddrInfo& info = mapInfo[n];//map，这里可以自动生成一个新的value
         s >> info;
         mapAddr[info] = n;
         info.nRandomPos = vRandom.size();

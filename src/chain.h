@@ -320,6 +320,7 @@ public:
 
     //! @returns true if the block is assumed-valid; this means it is queued to be
     //!   validated by a background chainstate.
+    //!  和assumeutxo有关
     bool IsAssumedValid() const EXCLUSIVE_LOCKS_REQUIRED(::cs_main)
     {
         AssertLockHeld(::cs_main);
@@ -451,7 +452,9 @@ public:
         return vChain.size() > 0 ? vChain[0] : nullptr;
     }
 
-    /** Returns the index entry for the tip of this chain, or nullptr if none. */
+    /** Returns the index entry for the tip of this chain, or nullptr if none. 
+     *  !NOTES:可以是blocktip的解释，chain上最后面的block，相对genesis是第一个区块
+    */
     CBlockIndex* Tip() const
     {
         return vChain.size() > 0 ? vChain[vChain.size() - 1] : nullptr;

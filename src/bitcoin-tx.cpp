@@ -855,6 +855,7 @@ static int CommandLineRawTx(int argc, char* argv[])
     return nRet;
 }
 
+//!TODO: 这个类用来干嘛的？和bitcoind之类的有什么区别？，很明显这是一种多进程方案
 MAIN_FUNCTION
 {
     SetupEnvironment();

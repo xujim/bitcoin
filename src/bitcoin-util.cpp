@@ -41,6 +41,7 @@ static void SetupBitcoinUtilArgs(ArgsManager &argsman)
     SetupChainParamsBaseOptions(argsman);
 }
 
+// !TODO: utils也可以是单独的进程
 // This function returns either one of EXIT_ codes when it's expected to stop the process or
 // CONTINUE_EXECUTION when it's expected to continue further.
 static int AppInitUtil(ArgsManager& args, int argc, char* argv[])

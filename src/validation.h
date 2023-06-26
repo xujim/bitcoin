@@ -1026,7 +1026,7 @@ public:
     //! Steps:
     //!
     //! - Initialize an unused Chainstate.
-    //! - Load its `CoinsViews` contents from `coins_file`.
+    //! - Load its `CoinsViews` contents from `coins_file`. //据说CoinsViews是一个公共的、透明的存储库，用于记录每个区块链上的交易历史记录
     //! - Verify that the hash of the resulting coinsdb matches the expected hash
     //!   per assumeutxo chain parameters.
     //! - Wait for our headers chain to include the base block of the snapshot.

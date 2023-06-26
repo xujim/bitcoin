@@ -19,6 +19,7 @@
  * This prevector size is determined by the largest .resize() in the
  * CompressScript function. The largest compressed script format is a
  * compressed public key, which is 33 bytes.
+ * !TODO: 关于script这块仍然没搞明白怎么执行的，包括怎么压缩的
  */
 using CompressedScript = prevector<33, unsigned char>;
 

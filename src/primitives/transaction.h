@@ -37,7 +37,7 @@ class COutPoint
 {
 public:
     uint256 hash;
-    uint32_t n;
+    uint32_t n; //!TODO: 这个字段是什么意思？tx的序号？
 
     static constexpr uint32_t NULL_INDEX = std::numeric_limits<uint32_t>::max();
 
