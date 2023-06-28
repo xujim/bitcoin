@@ -96,12 +96,14 @@ static CMainSignals g_signals;
 
 void CMainSignals::RegisterBackgroundSignalScheduler(CScheduler& scheduler)
 {
+    //m_internals是MainSignalsImpl实例
     assert(!m_internals);
     m_internals = std::make_unique<MainSignalsImpl>(scheduler);
 }
 
 void CMainSignals::UnregisterBackgroundSignalScheduler()
 {
+    //m_internals是MainSignalsImpl实例
     m_internals.reset(nullptr);
 }
 

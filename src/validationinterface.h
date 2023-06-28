@@ -178,7 +178,7 @@ protected:
 class MainSignalsImpl;
 class CMainSignals {
 private:
-    std::unique_ptr<MainSignalsImpl> m_internals;
+    std::unique_ptr<MainSignalsImpl> m_internals; //MainSignalsImpl实例
 
     friend void ::RegisterSharedValidationInterface(std::shared_ptr<CValidationInterface>);
     friend void ::UnregisterValidationInterface(CValidationInterface*);

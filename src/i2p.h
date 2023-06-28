@@ -46,6 +46,10 @@ namespace sam {
  * Used to avoid a runaway proxy from sending us an "unlimited" amount of data without a terminator.
  * The longest known message is ~1400 bytes, so this is high enough not to be triggered during
  * normal operation, yet low enough to avoid a malicious proxy from filling our memory.
+ * I2P（Invisible Internet Project即“隐形网计划”），是一项混和授权的匿名网络项目。
+I2P网络是由I2P路由器以大蒜路由方式组成的表层网络，创建于其上的应用程序可以安全匿名的相互通信。
+它可以同时使用UDP及TCP协议，支持UPnP映射。其应用包括匿名上网、聊天、撰写博客和文件传输。
+http://codelife.me/blog/2012/10/07/config-i2p-router-in-macos-x/
  */
 static constexpr size_t MAX_MSG_SIZE{65536};
 

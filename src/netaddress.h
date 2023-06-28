@@ -515,7 +515,9 @@ public:
     friend bool operator<(const CSubNet& a, const CSubNet& b);
 };
 
-/** A combination of a network address (CNetAddr) and a (TCP) port */
+/** A combination of a network address (CNetAddr) and a (TCP) port
+ * 这个对象既有地址也有port
+ */
 class CService : public CNetAddr
 {
 protected:

@@ -121,7 +121,7 @@ static bool AppInit(NodeContext& node, int argc, char* argv[])
     util::ThreadSetInternalName("init");
 
     // If Qt is used, parameters/bitcoin.conf are parsed in qt/bitcoin.cpp's main()
-    ArgsManager& args = *Assert(node.args);
+    ArgsManager& args = *Assert(node.args); //如果args长度为0，直接abort
     SetupServerArgs(args);
     std::string error;
     if (!args.ParseParameters(argc, argv, error)) {
@@ -181,7 +181,7 @@ static bool AppInit(NodeContext& node, int argc, char* argv[])
             return false;
         }
 
-        node.kernel = std::make_unique<kernel::Context>();
+        node.kernel = std::make_unique<kernel::Context>();//kernel其实很简单，仅仅是随机数种子或者ecc加密环境
         if (!AppInitSanityChecks(*node.kernel))
         {
             // InitError will have been called with detailed error, which ends up on console
@@ -218,11 +218,12 @@ static bool AppInit(NodeContext& node, int argc, char* argv[])
 #endif // HAVE_DECL_FORK
         }
         // Lock data directory after daemonization
-        if (!AppInitLockDataDirectory())
+        if (!AppInitLockDataDirectory())//lock目录，通过.lock后缀的文件
         {
             // If locking the data directory failed, exit immediately
             return false;
         }
+        //创建chainImp对象，并放在node中
         fRet = AppInitInterfaces(node) && AppInitMain(node);
     }
     catch (const std::exception& e) {

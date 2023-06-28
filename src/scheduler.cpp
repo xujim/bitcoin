@@ -20,7 +20,7 @@ CScheduler::~CScheduler()
     if (stopWhenEmpty) assert(taskQueue.empty());
 }
 
-
+//执行queue中的task
 void CScheduler::serviceQueue()
 {
     SetSyscallSandboxPolicy(SyscallSandboxPolicy::SCHEDULER);

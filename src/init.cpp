@@ -829,10 +829,12 @@ bool AppInitBasicSetup(const ArgsManager& args)
     // Enable heap terminate-on-corruption
     HeapSetInformation(nullptr, HeapEnableTerminationOnCorruption, nullptr, 0);
 #endif
+    //!NOTES: 只在win32下采用
     if (!InitShutdownState()) {
         return InitError(Untranslated("Initializing wait-for-shutdown state failed."));
     }
 
+    //!NOTES: 只在win32下采用
     if (!SetupNetworking()) {
         return InitError(Untranslated("Initializing networking failed."));
     }
@@ -851,7 +853,7 @@ bool AppInitBasicSetup(const ArgsManager& args)
     SetConsoleCtrlHandler(consoleCtrlHandler, true);
 #endif
 
-    std::set_new_handler(new_handler_terminate);
+    std::set_new_handler(new_handler_terminate);//new或new[]操作符分配内存失败后的响应函数
 
     return true;
 }
@@ -889,6 +891,7 @@ bool AppInitParameterInteraction(const ArgsManager& args, bool use_syscall_sandb
         InitWarning(warnings);
     }
 
+    //!NOTES: block存储的路径
     if (!fs::is_directory(args.GetBlocksDirPath())) {
         return InitError(strprintf(_("Specified blocks directory \"%s\" does not exist."), args.GetArg("-blocksdir", "")));
     }
@@ -1102,7 +1105,7 @@ bool AppInitLockDataDirectory()
 
 bool AppInitInterfaces(NodeContext& node)
 {
-    node.chain = node.init->makeChain();
+    node.chain = node.init->makeChain();//该函数在init有不同的子类实现
     return true;
 }
 
@@ -1167,13 +1170,15 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     node.scheduler = std::make_unique<CScheduler>();
 
     // Start the lightweight task scheduler thread
+    //TraceThread线程函数会调度执行serviceQueue()中的task
     node.scheduler->m_service_thread = std::thread(util::TraceThread, "scheduler", [&] { node.scheduler->serviceQueue(); });
 
-    // Gather some entropy once per minute.
+    // Gather some entropy once per minute. 似乎是每分钟生成随机数
     node.scheduler->scheduleEvery([]{
         RandAddPeriodic();
     }, std::chrono::minutes{1});
 
+    //!TODO: 这个函数意义不明
     GetMainSignals().RegisterBackgroundSignalScheduler(*node.scheduler);
 
     // Create client interfaces for wallets that are supposed to be loaded
@@ -1201,7 +1206,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
      */
     if (args.GetBoolArg("-server", false)) {
         uiInterface.InitMessage_connect(SetRPCWarmupStatus);
-        if (!AppInitServers(node))
+        if (!AppInitServers(node))//启动RPC服务，基于event_http
             return InitError(_("Unable to start HTTP server. See debug log for details."));
     }
 
@@ -1224,7 +1229,8 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     {
 
-        // Read asmap file if configured TODO: asmap是什么文件？配置什么信息？
+        // Read asmap file if configured 
+        //!TODO: asmap是什么文件？配置什么信息？
         std::vector<bool> asmap;
         if (args.IsArgSet("-asmap")) {
             fs::path asmap_path = args.GetPathArg("-asmap", DEFAULT_ASMAP_FILENAME);
@@ -1268,6 +1274,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     assert(!node.fee_estimator);
     // Don't initialize fee estimation with old data if we don't relay transactions,
     // as they would never get updated.
+    //!TODO: fee的统计policy也会存在本地吗？
     if (!ignores_incoming_txs) node.fee_estimator = std::make_unique<CBlockPolicyEstimator>(FeeestPath(args));
 
     // Check port numbers
@@ -1316,8 +1323,9 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     }
 
     // sanitize comments per BIP-0014, format user agent and check total size
+    //!TODO: uacomments是什么？
     std::vector<std::string> uacomments;
-    for (const std::string& cmt : args.GetArgs("-uacomment")) {
+    for (const std::string& cmt : args.GetArgs("-uacomment")) { 
         if (cmt != SanitizeString(cmt, SAFE_CHARS_UA_COMMENT))
             return InitError(strprintf(_("User Agent comment (%s) contains unsafe characters."), cmt));
         uacomments.push_back(cmt);
@@ -1431,6 +1439,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     for (const std::string& strAddr : args.GetArgs("-externalip")) {
         const std::optional<CService> addrLocal{Lookup(strAddr, GetListenPort(), fNameLookup)};
         if (addrLocal.has_value() && addrLocal->IsValid())
+            //!TODO: 这个ip添加为local的意义是什么？
             AddLocal(addrLocal.value(), LOCAL_MANUAL);
         else
             return InitError(ResolveErrMsg("externalip", strAddr));
@@ -1701,6 +1710,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     }
 
     chainman.m_load_block = std::thread(&util::TraceThread, "loadblk", [=, &chainman, &args] {
+        //!TODO: 这里好像是从文件中加载block,并且从mempool的路径上加载mempool，哪里是从peer读取block呢？
         ThreadImport(chainman, vImportFiles, ShouldPersistMempool(args) ? MempoolPath(args) : fs::path{});
     });
 
@@ -1883,7 +1893,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     connOptions.m_i2p_accept_incoming = args.GetBoolArg("-i2pacceptincoming", DEFAULT_I2P_ACCEPT_INCOMING);
 
-    //!TODO: 连接p2p网络
+    //!TODO: 连接p2p网络,但在什么时候同步block呢？
     if (!node.connman->Start(*node.scheduler, connOptions)) {
         return false;
     }
@@ -1904,7 +1914,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     uiInterface.InitMessage(_("Done loading").translated);
 
     for (const auto& client : node.chain_clients) {
-        client->start(*node.scheduler);
+        client->start(*node.scheduler);//钱包
     }
 
     BanMan* banman = node.banman.get();
@@ -1912,6 +1922,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         banman->DumpBanlist();
     }, DUMP_BANS_INTERVAL);
 
+    //!TODO: 这里是通知peer那些block/tx是stale的吗？
     if (node.peerman) node.peerman->StartScheduledTasks(*node.scheduler);
 
 #if HAVE_SYSTEM
