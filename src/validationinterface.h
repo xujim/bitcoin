@@ -176,6 +176,7 @@ protected:
 };
 
 class MainSignalsImpl;
+//!TODO: 这个设计目的是什么？
 class CMainSignals {
 private:
     std::unique_ptr<MainSignalsImpl> m_internals; //MainSignalsImpl实例

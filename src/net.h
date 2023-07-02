@@ -692,7 +692,7 @@ protected:
     ~NetEventsInterface() = default;
 };
 
-//!TODO:这个类用于干嘛？
+//!NOTES:这个类用于干嘛？连接管理器
 class CConnman
 {
 public:

@@ -52,6 +52,7 @@ void CScheduler::serviceQueue()
             if (shouldStop() || taskQueue.empty())
                 continue;
 
+            //从queue中取出一个task进行执行
             Function f = taskQueue.begin()->second;
             taskQueue.erase(taskQueue.begin());
 
@@ -127,6 +128,7 @@ size_t CScheduler::getQueueInfo(std::chrono::steady_clock::time_point& first,
 bool CScheduler::AreThreadsServicingQueue() const
 {
     LOCK(newTaskMutex);
+    //!TODO: 这个变量用来干嘛的？
     return nThreadsServicingQueue;
 }
 
@@ -153,6 +155,7 @@ void SingleThreadedSchedulerClient::ProcessQueue()
         if (m_callbacks_pending.empty()) return;
         m_are_callbacks_running = true;
 
+        //取出一个待执行的callback
         callback = std::move(m_callbacks_pending.front());
         m_callbacks_pending.pop_front();
     }
@@ -168,7 +171,7 @@ void SingleThreadedSchedulerClient::ProcessQueue()
                 LOCK(instance->m_callbacks_mutex);
                 instance->m_are_callbacks_running = false;
             }
-            instance->MaybeScheduleProcessQueue();
+            instance->MaybeScheduleProcessQueue();//在超出变量scope的时候，仍然会调用
         }
     } raiicallbacksrunning(this);
 
