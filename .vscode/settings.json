@@ -3,6 +3,14 @@
         "vector": "cpp",
         "__split_buffer": "cpp",
         "deque": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "stdexcept": "cpp",
+        "unordered_map": "cpp",
+        "any": "cpp",
+        "optional": "cpp",
+        "variant": "cpp",
+        "__hash_table": "cpp",
+        "new": "cpp",
+        "thread": "cpp"
     }
 }

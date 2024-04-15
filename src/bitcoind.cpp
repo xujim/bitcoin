@@ -223,7 +223,7 @@ static bool AppInit(NodeContext& node, int argc, char* argv[])
             // If locking the data directory failed, exit immediately
             return false;
         }
-        //创建chainImp对象，并放在node中
+        //第一个调用创建chainImp对象，并放在node中；AppInitMain则
         fRet = AppInitInterfaces(node) && AppInitMain(node);
     }
     catch (const std::exception& e) {
